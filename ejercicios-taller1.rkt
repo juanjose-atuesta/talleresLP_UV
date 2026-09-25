@@ -1,10 +1,9 @@
 #lang eopl
-
 ;; Integrantes:
 ;; Juan Jose Atuesta Flor -> Ejercicios: 7-10 14 y 17
 ;; William Rooselbelt May Barreto -> Ejercicios: 6, 11-13 , 15, 18
 
-;Ejercicio 6 
+;;Ejercicio 6 
 ;;replace-nth:
 ;;Proposito:
 ;;valor-de-Scheme x valor-de-scheme x Numero x Lista -> Lista: Procedimiento que reemplaza unicamente la N-esima ocurrencia del elemento E por el elemento R en la lista L,
@@ -51,8 +50,10 @@
 ;; cartesian-filter
 ;; Proposito:
 ;; L x L x P -> L' : Procedimiento que dado dos listas, devuelve una lista con  todas los pares posibles entre dos listas que cumplen con la condicion dada por el predicado P
+;; <tupla> := ( <int> <int> )
+;; <lista> := ()
+;;         := ( <tupla> <lista>)
 
-;; <lista> :=
 (define cartesian-filter 
   (lambda (l1 l2 F)
   (define combinacion
@@ -83,6 +84,64 @@
 (cartesian-filter '(1 2 3) '(4 5 6) (lambda (x y) (< x y)))
 (cartesian-filter '(1 2 3) '(1 2 3 4) (lambda (x y) (= (+ x y) 5)))
 
+;; Ejercicio 8
+;; group-by 
+;; Proposito:
+;; F x L -> ((v, L')) : Procedimiento para que dado una funcion F y una lista L retorna una lista de pares de forma (v, L') donde c es un valor producido por F y L' la lista que contiene
+;; todos los elementos de L para los cuales la función F retorna dicho valor 
+;; <tupla> := (<Schame-Value> <lista>)
+;; <lista> := ()
+;;         := ( <Schame-Value> <lista>)
+;; <grupos> := ()
+;;          := ( <tupla> <grupos>)
+
+
+(define group-by (lambda (F l)
+        (define isInList? (lambda (x lista)
+              (
+               cond
+               [(null? lista) #f]
+               [(equal? (car lista) x) #t]
+               [else (isInList? x (cdr lista))]
+               )
+                            ))
+
+
+ (define posiblesValores (lambda (l1 posiblesV)
+                  (
+                   cond 
+                   [(null? l1) posiblesV]
+                   [(isInList? (F (car l1)) posiblesV) (posiblesValores (cdr l1) posiblesV)]
+                   [else (posiblesValores (cdr l1) (myAppend posiblesV (cons (F(car l1)) '())))]
+                   )
+                                  ))
+  (define list_group (lambda (x lista)
+                       (
+                        cond
+                        [(null? lista) '()]
+                        [(equal? (F (car lista)) x) (cons (car lista) (list_group x (cdr lista)))]
+                        [else (list_group x (cdr lista))]
+                        )
+                       ))
+  (define group-creator (lambda (listaEntrada listaValores listaFinal) 
+        (
+        cond 
+        [(null? listaValores) listaFinal]
+        [else (group-creator listaEntrada (cdr listaValores)  (myAppend listaFinal (cons (cons 
+                                                                  (car listaValores) (cons 
+                                                                                      (list_group (car listaValores) listaEntrada) '())) '())))]
+
+                                                                         ))
+     )
+   (group-creator l (posiblesValores l '()) '())
+                   ))
+
+;; Pruebas
+ (group-by (lambda (x) (if (number? x) 'numero 'otro)) '(a 2 b 4 c 7 9 0 d f y 4 b))
+(group-by (lambda (x) (if (= (remainder x 2) 0) 'par 'impar)) '(1 2 3 4 5 6 7 8 9))
+(group-by (lambda (x) (* x x)) '(1 2 1 3 4 5 5 9))
+
+
 ;;Ejercicio 11
 ;;merge-by:
 ;;Proposito:
@@ -103,4 +162,5 @@
 ;;Pruebas
 (merge-by > '() '())
 (merge-by equal? '(a b c) '(a z c))
+
 
