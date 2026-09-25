@@ -8,7 +8,7 @@
 ;; Proposito:
 ;; L x L -> L' : Procedimiento que une dos listas de manera recursiva 
 ;; <lista> := ()
-;;         := (<valor-de-scheme> <lista>)
+;;         := (<int> <lista>)
 
 (define myAppend (lambda (l1 l2)
                (cond 
@@ -26,8 +26,10 @@
 ;; cartesian-filter
 ;; Proposito:
 ;; L x L x P -> L' : Procedimiento que dado dos listas, devuelve una lista con  todas los pares posibles entre dos listas que cumplen con la condicion dada por el predicado P
+;; <tupla> := ( <int> <int> )
+;; <lista> := ()
+;;         := ( <tupla> <lista>)
 
-;; <lista> :=
 (define cartesian-filter 
   (lambda (l1 l2 F)
   (define combinacion
@@ -57,4 +59,19 @@
 ;; pruebas
 (cartesian-filter '(1 2 3) '(4 5 6) (lambda (x y) (< x y)))
 (cartesian-filter '(1 2 3) '(1 2 3 4) (lambda (x y) (= (+ x y) 5)))
+
+
+;; Ejercicio 8
+;; group-by 
+;; Proposito:
+;; F x L -> ((v, L')) : Procedimiento para que dado una funcion F y una lista L retorna una lista de pares de forma (v, L') donde c es un valor producido por F y L' la lista que contiene
+;; todos los elementos de L para los cuales la función F retorna dicho valor 
+;; <tupla> := (<Schame-Value> <lista>)
+;; <lista> := ()
+;;         := ( <Schame-Value> <lista>)
+;; <grupos> := ()
+;;          := ( <tupla> <grupos>)
+
+
+
 
