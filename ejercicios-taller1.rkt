@@ -3,6 +3,47 @@
 ;; Juan Jose Atuesta Flor -> Ejercicios: 7-10 14 y 17
 ;; William Rooselbelt May Barreto -> Ejercicios: 6, 11-13 , 15, 18
 
+
+;; FUNCIONES AUXILIARES PROPIAS
+
+;; myAppend:
+;; Proposito:
+;; L x L -> L' : Procedimiento que une dos listas de manera recursiva 
+;; <lista> := ()
+;;         := (<valor-de-scheme> <lista>)
+
+(define myAppend (lambda (l1 l2)
+               (cond 
+                 [(null? l1) l2]
+                 [else (cons (car l1) 
+                                  (myAppend (cdr l1) l2))]
+                               )))
+;; pruebas
+(myAppend '(1 2 3) '(1 2 3))
+(myAppend ' (2 3 4 5) '(5 7 8))
+
+
+
+;; Ejercicio 1
+
+
+
+;; Ejercicio 2
+
+
+
+;; Ejercicio 3
+
+
+
+;; Ejercicio 4
+
+
+
+;; Ejercicio 5
+
+
+
 ;;Ejercicio 6 
 ;;replace-nth:
 ;;Proposito:
@@ -25,24 +66,6 @@
 (replace-nth 'a 'x 1 '())
 (replace-nth 'a 'x 3 '(a b a c a))
 (replace-nth 't 'x 0 '(a b a c))
-
-;; FUNCIONES AUXILIARES PROPIAS
-
-;; myAppend:
-;; Proposito:
-;; L x L -> L' : Procedimiento que une dos listas de manera recursiva 
-;; <lista> := ()
-;;         := (<valor-de-scheme> <lista>)
-
-(define myAppend (lambda (l1 l2)
-               (cond 
-                 [(null? l1) l2]
-                 [else (cons (car l1) 
-                                  (myAppend (cdr l1) l2))]
-                               )))
-;; pruebas
-(myAppend '(1 2 3) '(1 2 3))
-(myAppend ' (2 3 4 5) '(5 7 8))
 
 
 
@@ -142,6 +165,15 @@
 (group-by (lambda (x) (* x x)) '(1 2 1 3 4 5 5 9))
 
 
+
+;; Ejercicio 9
+
+
+
+;; Ejercicio 10
+
+
+
 ;;Ejercicio 11
 ;;merge-by:
 ;;Proposito:
@@ -162,5 +194,33 @@
 ;;Pruebas
 (merge-by > '() '())
 (merge-by equal? '(a b c) '(a z c))
+
+
+
+;; Ejercicio 12
+
+
+
+;; Ejercicio 13
+
+
+
+;; Ejercicio 14
+
+
+
+;; Ejercicio 15
+
+
+
+;; Ejercicio 16
+
+
+
+;; Ejercicio 17
+
+
+
+;; Ejercicio 18
 
 
