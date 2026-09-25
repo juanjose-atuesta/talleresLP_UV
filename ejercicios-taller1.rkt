@@ -2,6 +2,28 @@
 ;; Integrantes:
 ;; Juan Jose Atuesta Flor -> Ejercicios: 7-10 14 y 17 
 
+;; FUNCIONES AUXILIARES PROPIAS
+
+;; myAppend:
+;; Proposito:
+;; L x L -> L' : Procedimiento que une dos listas de manera recursiva 
+;; <lista> := ()
+;;         := (<int> <lista>)
+
+(define myAppend (lambda (l1 l2)
+               (cond 
+                 [(null? l1) l2]
+                 [else (cons (car l1) 
+                                  (myAppend (cdr l1) l2))]
+                               )))
+;; pruebas
+(myAppend '(1 2 3) '(1 2 3))
+(myAppend ' (2 3 4 5) '(5 7 8))
+
+
+
+
+
 ;Ejercicio 6 
 ;;replace-nth:
 ;;Proposito:
@@ -24,27 +46,6 @@
 (replace-nth 'a 'x 1 '())
 (replace-nth 'a 'x 3 '(a b a c a))
 (replace-nth 't 'x 0 '(a b a c))
-
-
-
-;; FUNCIONES AUXILIARES PROPIAS
-
-;; myAppend:
-;; Proposito:
-;; L x L -> L' : Procedimiento que une dos listas de manera recursiva 
-;; <lista> := ()
-;;         := (<int> <lista>)
-
-(define myAppend (lambda (l1 l2)
-               (cond 
-                 [(null? l1) l2]
-                 [else (cons (car l1) 
-                                  (myAppend (cdr l1) l2))]
-                               )))
-;; pruebas
-(myAppend '(1 2 3) '(1 2 3))
-(myAppend ' (2 3 4 5) '(5 7 8))
-
 
 
 ;; Ejercicio 7
@@ -98,5 +99,48 @@
 ;;          := ( <tupla> <grupos>)
 
 
+(define group-by (lambda (F l)
+        (define isInList? (lambda (x lista)
+              (
+               cond
+               [(null? lista) #f]
+               [(equal? (car lista) x) #t]
+               [else (isInList? x (cdr lista))]
+               )
+                            ))
 
+
+ (define posiblesValores (lambda (l1 posiblesV)
+                  (
+                   cond 
+                   [(null? l1) posiblesV]
+                   [(isInList? (F (car l1)) posiblesV) (posiblesValores (cdr l1) posiblesV)]
+                   [else (posiblesValores (cdr l1) (myAppend posiblesV (cons (F(car l1)) '())))]
+                   )
+                                  ))
+  (define list_group (lambda (x lista)
+                       (
+                        cond
+                        [(null? lista) '()]
+                        [(equal? (F (car lista)) x) (cons (car lista) (list_group x (cdr lista)))]
+                        [else (list_group x (cdr lista))]
+                        )
+                       ))
+  (define group-creator (lambda (listaEntrada listaValores listaFinal) 
+        (
+        cond 
+        [(null? listaValores) listaFinal]
+        [else (group-creator listaEntrada (cdr listaValores)  (myAppend listaFinal (cons (cons 
+                                                                  (car listaValores) (cons 
+                                                                                      (list_group (car listaValores) listaEntrada) '())) '())))]
+
+                                                                         ))
+     )
+   (group-creator l (posiblesValores l '()) '())
+                   ))
+
+;; Pruebas
+ (group-by (lambda (x) (if (number? x) 'numero 'otro)) '(a 2 b 4 c 7 9 0 d f y 4 b))
+(group-by (lambda (x) (if (= (remainder x 2) 0) 'par 'impar)) '(1 2 3 4 5 6 7 8 9))
+(group-by (lambda (x) (* x x)) '(1 2 1 3 4 5 5 9))
 
