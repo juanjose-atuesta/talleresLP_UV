@@ -1,4 +1,9 @@
 #lang eopl
+
+;; Integrantes:
+;; Juan Jose Atuesta Flor -> Ejercicios: 7-10 14 y 17
+;; William Rooselbelt May Barreto -> Ejercicios: 6, 11-13 , 15, 18
+
 ;Ejercicio 6 
 ;;replace-nth:
 ;;Proposito:
@@ -21,10 +26,6 @@
 (replace-nth 'a 'x 1 '())
 (replace-nth 'a 'x 3 '(a b a c a))
 (replace-nth 't 'x 0 '(a b a c))
-
-;; Integrantes:
-;; Juan Jose Atuesta Flor -> Ejercicios: 7-10 14 y 17 
-
 
 ;; FUNCIONES AUXILIARES PROPIAS
 
@@ -82,4 +83,24 @@
 (cartesian-filter '(1 2 3) '(4 5 6) (lambda (x y) (< x y)))
 (cartesian-filter '(1 2 3) '(1 2 3 4) (lambda (x y) (= (+ x y) 5)))
 
+;;Ejercicio 11
+;;merge-by:
+;;Proposito:
+;;Valor x Valor -> Booleano, Lista x Lista -> Lista
+;;Compara posicion a posicion los elementos de dos listas L1 y L2 del mismo tamaño usando la funcion binaria F, si (F (car L1) (car L2)) es #t entonces
+;;retorna una nueva lista con el elemento de L1 en la posicion n-esima, en caso contrario sera con el elemento de L2
+;;<lista>:= ()
+;;      := (<valor-de-scheme><lista>)
+(define merge-by
+  (lambda (F L1 L2)
+    (cond
+      [(null? L1)'()]
+      [(F (car L1) (car L2))(cons (car L1) (merge-by F (cdr L1) (cdr L2)))]
+      [else (cons (car L2) (merge-by F (cdr L1) (cdr L2)))]
+      )
+    )
+  )
+;;Pruebas
+(merge-by > '() '())
+(merge-by equal? '(a b c) '(a z c))
 
