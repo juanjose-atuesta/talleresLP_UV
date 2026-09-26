@@ -47,7 +47,7 @@
 ;;Ejercicio 6 
 ;;replace-nth:
 ;;Proposito:
-;;valor-de-Scheme x valor-de-scheme x Numero x Lista -> Lista: Procedimiento que reemplaza unicamente la N-esima ocurrencia del elemento E por el elemento R en la lista L,
+;;E x R x N x L -> L': Procedimiento que reemplaza unicamente la N-esima ocurrencia del elemento E por el elemento R en la lista L,
 ;;contando las ocurrencias desde 0, en caso de que el elemento E no tenga n+1 ocurrencias retorna la lista L sin modificaciones.
 ;;
 ;;<lista> := ()
@@ -177,7 +177,7 @@
 ;;Ejercicio 11
 ;;merge-by:
 ;;Proposito:
-;;Valor x Valor -> Booleano, Lista x Lista -> Lista
+;;F x L1 x L2 -> L'
 ;;Compara posicion a posicion los elementos de dos listas L1 y L2 del mismo tamaño usando la funcion binaria F, si (F (car L1) (car L2)) es #t entonces
 ;;retorna una nueva lista con el elemento de L1 en la posicion n-esima, en caso contrario sera con el elemento de L2
 ;;<lista>:= ()
@@ -198,8 +198,22 @@
 
 
 ;; Ejercicio 12
-
-
+;;filter-map-acum
+;;Proposito
+;; a x b x G x F x Acum x P -> Valor
+;;Procedimiento que recorre los numeros del intervalo (a,b). Para cada numero que satisface el predicado P, aplica la funcion G y combina el resultado con el acumulador,
+;;mediante la función binaria F. Retorna el valor final del acumulador
+;;<entero>:= ... |-2|-1|0|1|2|...
+(define filter-map-acum
+  (lambda (a b G F acum P)
+    (cond
+     [(> a b) acum]
+     [(P a) (filter-map-acum (+ a 1) b G F (F acum (G a)) P)]
+     [else (filter-map-acum (+ a 1) b G F acum P)]
+     )
+    )
+  )
+(filter-map-acum 4 9 (lambda (x) (/ x 20)) - 2 odd?)
 
 ;; Ejercicio 13
 
