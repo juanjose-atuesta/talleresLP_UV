@@ -357,6 +357,23 @@
 ;; Ejercicio 10
 
 
+(define alternating? (lambda (L P) 
+ (define func_aux (lambda (l1 l2)
+                         (
+        cond
+        [(null? l2) '()]
+        [else (cons (cons (car l1) (cons (car l2) '())) (func_aux (cdr l1) (cdr l2)))]
+                         )
+                         ))
+
+      (define alternating?aux (lambda (l) 
+            (
+             cond 
+             [(null? l) #t]
+             [(F (car(car l)) (car(cdr(car l)))) (alternating?aux )]
+             )
+                                ))
+                                    ))
 
 ;;Ejercicio 11
 ;;merge-by:
