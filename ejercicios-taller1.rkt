@@ -241,6 +241,8 @@
 ;; pruebas
 (cartesian-filter '(1 2 3) '(4 5 6) (lambda (x y) (< x y)))
 (cartesian-filter '(1 2 3) '(1 2 3 4) (lambda (x y) (= (+ x y) 5)))
+(cartesian-filter '(1 4 7) '(2 3 5) (lambda (x y) (> x y)))
+(cartesian-filter '(2 3 4) '(6 8 9 12) (lambda (x y) (= (remainder y x) 0)))
 
 ;; Ejercicio 8
 ;; group-by 
@@ -352,8 +354,12 @@
                       ))
 ;; Pruebas
 (count-pairs '(2 3 8 6 1) (lambda (a b) (> a b)))
-(count-pairs ’(1 2 3 4) (lambda (a b) (> a b)))
 (count-pairs '(2 7 3 9 1) (lambda (a b) (< a b)))
+(count-pairs
+ '(1 2 3 4 5)
+ (lambda (a b)
+   (= (remainder (+ a b) 2) 0)))
+(count-pairs '(2 3 4 6 8 9) (lambda (a b) (= (remainder b a) 0)))
 
 ;; Ejercicio 10
 ;; alternating?
