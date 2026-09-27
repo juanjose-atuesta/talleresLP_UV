@@ -2,9 +2,12 @@
 ;; Integrantes:
 ;; Juan Jose Atuesta Flor -> Ejercicios: 7-10 14 y 17
 ;; William Rooselbelt May Barreto -> Ejercicios: 6, 11-13 , 15, 18
-
+;; Miguel Angel Martinez Eraso -> Ejercicios: 1-5, y 16
 
 ;; FUNCIONES AUXILIARES PROPIAS
+(define (add1 x) (+ x 1))
+(define (sub1 x) (- x 1))
+(define (sqr x) (* x x))
 
 ;; myAppend:
 ;; Proposito:
