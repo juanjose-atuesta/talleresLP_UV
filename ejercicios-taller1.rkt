@@ -304,8 +304,8 @@
 ;; Ejercicio 9
 ;; count-pairs
 ;; Proposito:
-;; L x B -> C : Procedimiento que dada una lista y un predicado binario P , devuelve el numero de elementos (a,b) de L tales que a aparece antes que b y el predicado P(a,b)
-;; debe retornar #t, de forma que cada pareja debe contarse una sola vez
+;; L x P -> C : Procedimiento que dada una lista y un predicado binario P , devuelve el numero de elementos (a,b) de L tales que a aparece antes que b y el predicado P(a,b)
+;; debe retornar #t, de forma que cada pareja debe contarse una sola vez.
 ;;
 ;; <tupla> := ( <int> <int> )
 ;; <lista> := ()
@@ -337,6 +337,7 @@
                    [else (limpiarRepetidos (cdr l1) (myAppend posiblesV (cons (car l1) '())))]
                    )
                   ))
+
     (define contarParejas (lambda (l contador) 
                             (
                 cond 
@@ -355,25 +356,30 @@
 (count-pairs '(2 7 3 9 1) (lambda (a b) (< a b)))
 
 ;; Ejercicio 10
-
+;; alternating?
+;; Proposito:
+;; L x P -> Boolean : Procedimiento que dado una lista L y un predicado P retorna true si para cada pareja de elementos consecutivos de L, el predicado P retorna #t, de lo contrario, retorna #f
+;;
+;; <tupla> := ( <int> <int> )
+;; <lista> := ()
+;;         := ( <tupla> <lista>)
 
 (define alternating? (lambda (L P) 
  (define func_aux (lambda (l1 l2)
                          (
         cond
-        [(null? l2) '()]
-        [else (cons (cons (car l1) (cons (car l2) '())) (func_aux (cdr l1) (cdr l2)))]
+        [(null? l2) #t]
+        [(F (car l1) (car l2)) (func_aux (cdr l1) (cdr l2))]
+        [else #f]
                          )
                          ))
-
-      (define alternating?aux (lambda (l) 
-            (
-             cond 
-             [(null? l) #t]
-             [(F (car(car l)) (car(cdr(car l)))) (alternating?aux )]
-             )
-                                ))
+  (func_aux L (cdr l))
                                     ))
+;; Pruebas:
+(alternating? '(1 3 5 8 10) (lambda (a b) (< a b)))
+(alternating? '(1 3 2 5 7) (lambda (a b) (< a b)))
+(alternating? '(2 2 2 2 2) (lambda (a b) (= a b)))
+
 
 ;;Ejercicio 11
 ;;merge-by:
