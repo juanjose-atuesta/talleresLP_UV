@@ -177,8 +177,7 @@
 ;;Ejercicio 11
 ;;merge-by:
 ;;Proposito:
-;;F x L1 x L2 -> L'
-;;Compara posicion a posicion los elementos de dos listas L1 y L2 del mismo tamaño usando la funcion binaria F, si (F (car L1) (car L2)) es #t entonces
+;;F x L1 x L2 -> L': Compara posicion a posicion los elementos de dos listas L1 y L2 del mismo tamaño usando la funcion binaria F, si (F (car L1) (car L2)) es #t entonces
 ;;retorna una nueva lista con el elemento de L1 en la posicion n-esima, en caso contrario sera con el elemento de L2
 ;;<lista>:= ()
 ;;      := (<valor-de-scheme><lista>)
@@ -200,9 +199,8 @@
 ;; Ejercicio 12
 ;;filter-map-acum
 ;;Proposito
-;; a x b x G x F x Acum x P -> Valor
-;;Procedimiento que recorre los numeros del intervalo (a,b). Para cada numero que satisface el predicado P, aplica la funcion G y combina el resultado con el acumulador,
-;;mediante la función binaria F. Retorna el valor final del acumulador
+;; a x b x G x F x Acum x P -> Valor: Programa que recorre los numeros del intervalo (a,b). Para cada numero que satisface el predicado P, aplica la funcion G y combina el resultado
+;;con el acumulador, mediante la función binaria F. Retorna el valor final del acumulador
 ;;<entero>:= ... |-2|-1|0|1|2|...
 (define filter-map-acum
   (lambda (a b G F acum P)
@@ -221,8 +219,7 @@
 ;; Ejercicio 13
 ;;operate
 ;;Proposito:
-;;L x L -> Valor
-;;Procedimiento que aplica sucesivamente las funciones binarias de la lista lrators a los valores e la lista lrands y retorna el resultado de las operaciones.
+;;L x L -> Valor: Procedimiento que aplica sucesivamente las funciones binarias de la lista lrators a los valores e la lista lrands y retorna el resultado de las operaciones.
 ;;<lista-de-funciones>:= () | (<funcion-binaria><lista-de-funciones>)
 ;;<lista-de-numeros>:= () | (<numero><lista-de-numeros>)
 (define operate
@@ -244,6 +241,64 @@
 
 
 ;; Ejercicio 15
+;;same-elements?
+;;Proposito
+;;BST1 x BST2 -> Booleano
+;;Recibe dos arboles binarios de busqueda representados por listas BST1 y BST2 Y determina si ambos contienen exactamente los mismos numeros independientemente de la estructura de los
+;;nodos, devuelve #t si son exactamente igualels y #f en el caso constrario
+;;<arbol-binario>:= empty
+;;               := (numero <arbol-binario> <arbol-binario>)
+
+;; Funciones auxiliares
+
+;; my-append:
+;; Proposito:
+;; L x L -> L' : Une dos listas recursivamente 
+;; <lista> := ()
+;;         := (<valor-de-scheme> <lista>)
+
+;;arbol-a-lista:
+;;Proposito
+;; BST -> L: Convierte el arbol binario de busqueda representado por listas y retorna una lista ordenada con todos sus numeros.
+;;<arbol-binario>:= () | (<numero> <arbol-binario> <arbol-binario>
+;;               := () | (<numero> <lista-de-numeros>)
+
+(define mi-append
+  (lambda (L1 L2)
+    (cond
+      [(null? L1) L2]
+      [else (cons (car L1) (mi-append (cdr L1) L2))]
+      )
+    )
+  )                               
+;;Pruebas
+(mi-append '(7 5 3) '(4 9 1))
+(mi-append ' (8 6 2 1) '(7 8))
+(mi-append '(3 2 1) '(4 6 2 8 9))
+
+(define arbol-a-lista
+  (lambda (BST)
+    (cond
+      [(null? BST) '()]
+      [else (mi-append (arbol-a-lista (cadr BST)) (cons (car BST) (arbol-a-lista (caddr BST))))]
+      )
+    )
+  )
+;;Pruebas
+(arbol-a-lista '())
+(arbol-a-lista '(5 () ()))
+(arbol-a-lista '(8 (3 (1 () ()) (6 (4 () ()) (7 () ()))) (10 () (14 (13 () ()) ()))))
+
+(define same-elements?
+  (lambda (BST1 BST2)
+      (equal? (arbol-a-lista BST1) (arbol-a-lista BST2))
+      )
+    )
+;;Pruebas
+(same-elements? '() '())
+(same-elements? '() '(5 () ()))
+(same-elements? '(5 (3 () ()) (7 () ()))
+                '(5 (3 () ()) ()))
 
 
 
@@ -255,6 +310,20 @@
 
 
 
-;; Ejercicio 18
-
-
+;;Ejercicio 18
+;;to-infinix
+;;Proposito
+;;E -> E': Recibe una expresion E en notacion prefija representada mediante listas y retorna la misma expresion en notacion infija
+;;<expresion>:= <numero> | <operador> <expresion> <expresion>
+;;<operador> := + | - | * | / | <simbolo>
+(define to-infinix
+  (lambda (E)
+    (cond
+      [(integer? E) E]
+      [else (cons (to-infinix (cadr E)) (cons (car E) (cons (to-infinix (caddr E))'())))]
+      )
+    )
+  )
+(to-infinix 42)
+(to-infinix '( - 10 5))
+(to-infinix '(/ (+ (* 2 3) 4) (- 10 2)))
