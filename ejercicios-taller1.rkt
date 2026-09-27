@@ -450,6 +450,23 @@
 
 
 ;; Ejercicio 14
+;; ancestors
+;; Proposito:
+;; 
+(define ancestors (lambda (x arbol) 
+          (
+           cond
+           [(equal? x (car arbol)) '()]
+           [(> x (car arbol)) ( cons (car arbol) (ancestors x (car(cdr(cdr arbol)))) )]
+           [else (cons (car arbol) (ancestors x (car(cdr arbol))))]
+            )
+                    ))
+
+;; Pruebas 
+(ancestors 13 '(8 (3 (1 () ()) (6 (4 () ()) (7 () ()))) (10 () (14 (13 () ()) ()))))
+(ancestors 8 '(8 (3 (1 () ()) (6 (4 () ()) (7 () ()))) (10 () (14 (13 () ()) ()))))
+(ancestors 2 '(10 (6 (4 (2 () ()) (5 () ())) (8 () ())) (15 () ())))
+(ancestors 90 '(50 (30 () ()) (75 (60 () ()) (100 (90 () ()) (120 () ())))))
 
 
 
