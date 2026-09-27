@@ -213,9 +213,29 @@
      )
     )
   )
-(filter-map-acum 4 9 (lambda (x) (/ x 20)) - 2 odd?)
+;;Pruebas
+
+(filter-map-acum 5 1 (lambda (x) (* x 2)) + 50 odd?)
+(filter-map-acum 3 3 (lambda (x) (* x x)) + 0 odd?)
 
 ;; Ejercicio 13
+;;operate
+;;Proposito:
+;;L x L -> Valor
+;;Procedimiento que aplica sucesivamente las funciones binarias de la lista lrators a los valores e la lista lrands y retorna el resultado de las operaciones.
+;;<lista-de-funciones>:= () | (<funcion-binaria><lista-de-funciones>)
+;;<lista-de-numeros>:= () | (<numero><lista-de-numeros>)
+(define operate
+  (lambda (lrators lrands)
+    (cond
+      [(null? lrators) (car lrands)]
+      [else (operate (cdr lrators) (cons((car lrators) (car lrands) (cadr lrands)) (cddr lrands)))]
+      )
+    )
+  )
+;;Pruebas
+(operate '() '(42))
+(operate (list + * -) '(2 3 0 7))
 
 
 
