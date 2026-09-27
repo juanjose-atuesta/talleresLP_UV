@@ -5,6 +5,9 @@
 
 
 ;; FUNCIONES AUXILIARES PROPIAS
+(define (add1 x) (+ x 1))
+(define (sub1 x) (- x 1))
+(define (sqr x) (* x x))
 
 ;; myAppend:
 ;; Proposito:
