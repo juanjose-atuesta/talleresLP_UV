@@ -26,23 +26,158 @@
 
 ;; Ejercicio 1
 
+;; filter-pairs : L x (X -> bool) x (Y -> bool) -> L
+;; Proposito: dada una lista de pares (x y), retorna una lista con
+;; unicamente los pares donde x cumple P y y cumple Q.
+;;
+;; <lista-de-pares> := ()
+;;                   := ((<num> <num>) <lista-de-pares>)
+(define filter-pairs
+  (lambda (L P Q)
+    (if (null? L)
+        '()
+        (if (and (P (car (car L))) (Q (car (cdr (car L)))))
+            (cons (car L) (filter-pairs (cdr L) P Q))
+            (filter-pairs (cdr L) P Q)))))
 
+;; Pruebas
+(filter-pairs '((3 6) (5 10) (8 12) (7 14)) odd? even?)
+(filter-pairs '((5 9) (10 90) (82 7) (15 20)) even? even?)
 
 ;; Ejercicio 2
 
+;; transform-pairs : L x (X -> bool) x (X -> X) -> L
+;; Proposito: para cada par (x y) de L, si ambos cumplen P aplica F
+;; a cada elemento; si no, deja el par sin modificar.
+;;
+;; <lista-de-pares> := ()
+;;                   := ((<num> <num>) <lista-de-pares>)
+(define transform-pairs
+  (lambda (L P F)
+    (if (null? L)
+        '()
+        (if (and (P (car (car L))) (P (car (cdr (car L)))))
+            (cons (list (F (car (car L))) (F (car (cdr (car L)))))
+                  (transform-pairs (cdr L) P F))
+            (transform-pairs (cdr L) P F)))))
 
+;; Pruebas
+(transform-pairs '((2 4) (3 6) (8 10)) even? add1)
+(transform-pairs '((3 2) (4 2) (1 5) (2 8)) even? sqr)
 
 ;; Ejercicio 3
 
+;; mi-concat : L1 x L2 -> L
+;; Proposito: concatena dos listas sin usar la funcion append.
+;;
+;; <lista> := ()
+;;         := (<valor-de-scheme> <lista>)
+(define mi-concat
+  (lambda (l1 l2)
+    (if (null? l1)
+        l2
+        (cons (car l1) (mi-concat (cdr l1) l2)))))
 
+;; Pruebas
+(mi-concat '(1 2) '(3 4))
+(mi-concat '() '(a b))
+
+;; flatten-one : L -> L
+;; Proposito: elimina exactamente un nivel de anidamiento de L,
+;; conservando sin modificar los elementos que no son lista.
+;;
+;; <lista> := ()
+;;         := (<valor-de-scheme> <lista>)
+(define flatten-one
+  (lambda (L)
+    (if (null? L)
+        '()
+        (if (list? (car L))
+            (mi-concat (car L) (flatten-one (cdr L)))
+            (cons (car L) (flatten-one (cdr L)))))))
+
+;; Pruebas
+(flatten-one '((1 2) (3 4) (5 6)))
+(flatten-one '((una) (buena idea) ((de programacion))))
 
 ;; Ejercicio 4
 
+;; mayor5? : num -> bool
+;; Proposito: predicado auxiliar, indica si un numero es mayor o igual a 5.
+(define (mayor5? x)
+  (>= x 5))
 
+;; Pruebas
+(mayor5? 6)
+(mayor5? 3)
+
+;; list-remove-if : L x num x (X -> bool) -> L
+;; Proposito: elimina el elemento en la posicion n (desde cero) de L
+;; unicamente si dicho elemento cumple el predicado P.
+;;
+;; <lista> := ()
+;;         := (<valor-de-scheme> <lista>)
+(define (list-remove-if L n P)
+  (cond
+    [(null? L) '()]
+    [(zero? n)
+     (if (P (car L))
+         (cdr L)
+         L)]
+    [else
+     (cons (car L)
+           (list-remove-if (cdr L) (sub1 n) P))]))
+
+;; Pruebas
+(list-remove-if '(5 8 7 6) 2 odd?)
+(list-remove-if '(5 8 7 6) 3 mayor5?)
 
 ;; Ejercicio 5
 
+;; reverse-filter-equal? : L1 x L2 x (X -> bool) -> bool
+;; Proposito: determina si, considerando solo los elementos de cada
+;; lista que cumplen P, L2 corresponde a L1 recorrida en orden inverso.
+;;
+;; <lista> := ()
+;;         := (<valor-de-scheme> <lista>)
+(define (reverse-filter-equal? L1 L2 P)
 
+  ;; filtrar : L -> L
+  ;; Proposito: retorna los elementos de L que cumplen el predicado P.
+  (define (filtrar L)
+    (cond
+      [(null? L) '()]
+      [(P (car L))
+       (cons (car L) (filtrar (cdr L)))]
+      [else
+       (filtrar (cdr L))]))
+
+  ;; invertir : L -> L
+  ;; Proposito: retorna L en orden inverso, sin usar reverse.
+  (define (invertir L)
+    (define (aux L acumulado)
+      (if (null? L)
+          acumulado
+          (aux (cdr L)
+               (cons (car L) acumulado))))
+    (aux L '()))
+
+  ;; iguales? : L1 x L2 -> bool
+  ;; Proposito: determina si dos listas son iguales elemento a elemento.
+  (define (iguales? L1 L2)
+    (cond
+      [(and (null? L1) (null? L2)) #t]
+      [(or (null? L1) (null? L2)) #f]
+      [(equal? (car L1) (car L2))
+       (iguales? (cdr L1) (cdr L2))]
+      [else #f]))
+
+  (iguales? (filtrar L1)
+            (invertir (filtrar L2))))
+
+;; Pruebas
+(reverse-filter-equal? '(1 2 3 4 5) '(5 3 1 8 6) odd?)
+(reverse-filter-equal? '(1 2 3 4 5) '(5 3 2 1) even?)
 
 ;;Ejercicio 6 
 ;;replace-nth:
@@ -249,7 +384,50 @@
 
 ;; Ejercicio 16
 
+;; caminos-suma : BST x num -> L
+;; Proposito: retorna todos los caminos desde la raiz hasta una hoja
+;; de un arbol binario cuya suma de valores sea exactamente n,
+;; en orden de recorrido izquierda-derecha.
+;;
+;; <arbol-binario> := empty
+;;                 := (numero <arbol-binario> <arbol-binario>)
+(define (caminos-suma arbol n)
 
+  ;; invertir : L -> L  (reutilizada del ejercicio 5)
+  (define (invertir L)
+    (define (aux L acum)
+      (if (null? L)
+          acum
+          (aux (cdr L)
+               (cons (car L) acum))))
+    (aux L '()))
+
+  ;; buscar : BST x num x L x L -> L
+  ;; Proposito: recorre el arbol acumulando caminos validos en res.
+  (define (buscar arbol suma camino res)
+    (cond
+      [(null? arbol)
+       res]
+      [else
+       (let* ([valor (car arbol)]
+              [izq (cadr arbol)]
+              [der (caddr arbol)]
+              [nueva-suma (+ suma valor)]
+              [nuevo-camino (cons valor camino)])
+         (cond
+           [(and (null? izq) (null? der))
+            (if (= nueva-suma n)
+                (cons (invertir nuevo-camino) res)
+                res)]
+           [else
+            (let ([res-izq (buscar izq nueva-suma nuevo-camino res)])
+              (buscar der nueva-suma nuevo-camino res-izq))]))]))
+
+  (invertir (buscar arbol 0 '() '())))
+
+;; Pruebas
+(caminos-suma '(8 (3 (1 () ()) (6 (4 () ()) (7 () ()))) (10 () (14 (13 () ()) ()))) 12)
+(caminos-suma '(-7 (-8 () ()) (3 (-5 (-6 () ()) (-4 () (-2 () ()))) ())) -15)
 
 ;; Ejercicio 17
 
