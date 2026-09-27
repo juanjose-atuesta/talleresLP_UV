@@ -302,8 +302,57 @@
 
 
 ;; Ejercicio 9
+;; count-pairs
+;; Proposito:
+;; L x B -> C : Procedimiento que dada una lista y un predicado binario P , devuelve el numero de elementos (a,b) de L tales que a aparece antes que b y el predicado P(a,b)
+;; debe retornar #t, de forma que cada pareja debe contarse una sola vez
+;;
+;; <tupla> := ( <int> <int> )
+;; <lista> := ()
+;;         := ( <tupla> <lista>)
 
 
+(define count-pairs (lambda (l F) 
+   (define obtenerParejas (lambda (l1 l2 lf) (
+      cond 
+      [(equal? (cdr (cdr l1)) '()) (myAppend lf (cons (cons (car l1) (cons (car l2) '()))'()))]
+      [(equal? l2 '()) (obtenerParejas(cdr l1) (cdr (cdr l1)) lf)]
+      [else (obtenerParejas l1 (cdr l2) (myAppend lf (cons (cons (car l1) (cons (car l2) '())) '())) )]
+                                         )))
+    (define isInList? (lambda (x lista)
+                                
+              (
+               cond
+               [(null? lista) #f]
+               [(equal? (car lista) x) #t]
+               [else (isInList? x (cdr lista))]
+               )
+                            ))
+
+     (define limpiarRepetidos (lambda (l1 posiblesV)
+                  (
+                   cond 
+                   [(null? l1) posiblesV]
+                   [(isInList?  (car l1) posiblesV) (limpiarRepetidos (cdr l1) posiblesV)]
+                   [else (limpiarRepetidos (cdr l1) (myAppend posiblesV (cons (car l1) '())))]
+                   )
+                  ))
+    (define contarParejas (lambda (l contador) 
+                            (
+                cond 
+                [(null? l) contador]
+                [(F (car(car l)) (car(cdr(car l)))) (contarParejas (cdr l) (+ contador 1))]
+                [else (contarParejas (cdr l) contador)]
+                                                )
+          
+
+                            ))       
+    (contarParejas (limpiarRepetidos (obtenerParejas l (cdr l) '()) '()) 0)
+                      ))
+;; Pruebas
+(count-pairs '(2 3 8 6 1) (lambda (a b) (> a b)))
+(count-pairs ’(1 2 3 4) (lambda (a b) (> a b)))
+(count-pairs '(2 7 3 9 1) (lambda (a b) (< a b)))
 
 ;; Ejercicio 10
 
