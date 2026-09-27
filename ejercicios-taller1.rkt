@@ -382,9 +382,9 @@
   (func_aux L (cdr l))
                                     ))
 ;; Pruebas:
-(alternating? '(1 3 5 8 10) (lambda (a b) (< a b)))
-(alternating? '(1 3 2 5 7) (lambda (a b) (< a b)))
-(alternating? '(2 2 2 2 2) (lambda (a b) (= a b)))
+(alternating? '(1 3 5 7 9) (lambda (a b) (= (remainder (+ a b) 2) 0)))
+(alternating? '(2 4 6 8 10 12) (lambda (a b) (< a b)))
+(alternating? '(12 6 3 1) (lambda (a b) (= (remainder a b) 0)))
 
 
 ;;Ejercicio 11
