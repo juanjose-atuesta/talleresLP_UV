@@ -216,30 +216,20 @@
 ;;         := ( <tupla> <lista>)
 
 (define cartesian-filter 
-  (lambda (l1 l2 F)
-  (define combinacion
-     (
-      lambda (x l)
-      (
-      cond 
-      [(null? l) '()]         
-      [(F x (car l)) (cons  
-              (cons x (cons (car l) '())) 
-              (combinacion x (cdr l)  ))]
-      [else (combinacion x (cdr l))] 
-      )
-      ) 
-       )
+  (lambda (L1 L2 P)
+    (define combinacion
+      (lambda (x l)
+        (cond 
+          [(null? l) '()]         
+          [(P x (car l))
+           (cons  (cons x (cons (car l) '())) (combinacion x (cdr l)))]
+          [else (combinacion x (cdr l))])))
 
-    (
-    cond 
-    [(null? l1) '()]
-    [ else (myAppend (combinacion (car l1) l2) (cartesian-filter (cdr l1) l2 F) )]
-     )
-  
+    (cond 
+      [(null? L1) '()]
+      [else (myAppend (combinacion (car L1) L2) (cartesian-filter (cdr L1) L2 P))])
 
-    )
-)
+    ))
 
 ;; pruebas
 (cartesian-filter '(1 2 3) '(4 5 6) (lambda (x y) (< x y)))
@@ -259,7 +249,7 @@
 ;;          := ( <tupla> <grupos>)
 
 
-(define group-by (lambda (F l)
+(define group-by (lambda (F L)
         (define isInList? (lambda (x lista)
               (
                cond
@@ -296,7 +286,7 @@
 
                                                                          ))
      )
-   (group-creator l (posiblesValores l '()) '())
+   (group-creator L (posiblesValores L '()) '())
                    ))
 
 ;; Pruebas
@@ -317,51 +307,49 @@
 ;;         := ( <tupla> <lista>)
 
 
-(define count-pairs (lambda (l F) 
+(define count-pairs (lambda (L P) 
    (define obtenerParejas (lambda (l1 l2 lf) (
       cond 
-      [(equal? (cdr (cdr l1)) '()) (myAppend lf (cons (cons (car l1) (cons (car l2) '()))'()))]
-      [(equal? l2 '()) (obtenerParejas(cdr l1) (cdr (cdr l1)) lf)]
-      [else (obtenerParejas l1 (cdr l2) (myAppend lf (cons (cons (car l1) (cons (car l2) '())) '())) )]
-                                         )))
-    (define isInList? (lambda (x lista)
-                                
-              (
-               cond
-               [(null? lista) #f]
-               [(equal? (car lista) x) #t]
-               [else (isInList? x (cdr lista))]
-               )
-                            ))
+      [(equal? (cdr (cdr l1)) '()) (myAppend lf (cons (cons (car l1) (cons (car l2) '())) '()))]
+      [(equal? l2 '()) (obtenerParejas (cdr l1) (cdr (cdr l1)) lf)]
+      [else (obtenerParejas l1 (cdr l2) (myAppend lf (cons (cons (car l1) (cons (car l2) '())) '())))])))
 
-     (define limpiarRepetidos (lambda (l1 posiblesV)
-                  (
-                   cond 
-                   [(null? l1) posiblesV]
-                   [(isInList?  (car l1) posiblesV) (limpiarRepetidos (cdr l1) posiblesV)]
-                   [else (limpiarRepetidos (cdr l1) (myAppend posiblesV (cons (car l1) '())))]
-                   )
-                  ))
+   (define isInList? (lambda (x lista)
+      (
+       cond
+       [(null? lista) #f]
+       [(equal? (car lista) x) #t]
+       [else (isInList? x (cdr lista))]
+       )))
 
-    (define contarParejas (lambda (l contador) 
-                            (
-                cond 
-                [(null? l) contador]
-                [(F (car(car l)) (car(cdr(car l)))) (contarParejas (cdr l) (+ contador 1))]
-                [else (contarParejas (cdr l) contador)]
-                                                )
-          
+   (define limpiarRepetidos (lambda (l1 posiblesV)
+      (
+       cond 
+       [(null? l1) posiblesV]
+       [(isInList? (car l1) posiblesV) 
+        (limpiarRepetidos (cdr l1) posiblesV)]
+       [else 
+        (limpiarRepetidos 
+         (cdr l1) 
+         (myAppend posiblesV (cons (car l1) '())))]
+       )))
 
-                            ))       
-    (contarParejas (limpiarRepetidos (obtenerParejas l (cdr l) '()) '()) 0)
-                      ))
+   (define contarParejas (lambda (l contador) 
+      (
+       cond 
+       [(null? l) contador]
+       [(P (car (car l)) (car (cdr (car l)))) 
+        (contarParejas (cdr l) (+ contador 1))]
+       [else 
+        (contarParejas (cdr l) contador)]
+       )))
+
+   (contarParejas (limpiarRepetidos (obtenerParejas L (cdr L) '()) '()) 0)))
+
 ;; Pruebas
 (count-pairs '(2 3 8 6 1) (lambda (a b) (> a b)))
 (count-pairs '(2 7 3 9 1) (lambda (a b) (< a b)))
-(count-pairs
- '(1 2 3 4 5)
- (lambda (a b)
-   (= (remainder (+ a b) 2) 0)))
+(count-pairs '(1 2 3 4 5) (lambda (a b) (= (remainder (+ a b) 2) 0)))
 (count-pairs '(2 3 4 6 8 9) (lambda (a b) (= (remainder b a) 0)))
 
 ;; Ejercicio 10
@@ -378,11 +366,11 @@
                          (
         cond
         [(null? l2) #t]
-        [(F (car l1) (car l2)) (func_aux (cdr l1) (cdr l2))]
+        [(P (car l1) (car l2)) (func_aux (cdr l1) (cdr l2))]
         [else #f]
                          )
                          ))
-  (func_aux L (cdr l))
+  (func_aux L (cdr L))
                                     ))
 ;; Pruebas:
 (alternating? '(1 3 5 7 9) (lambda (a b) (= (remainder (+ a b) 2) 0)))
@@ -455,13 +443,15 @@
 ;; Ejercicio 14
 ;; ancestors
 ;; Proposito:
-;; 
-(define ancestors (lambda (x arbol) 
+;; n x BST -> L : Procedimiento que dado un nodo n y un arbol BST binario de busqueda (representado con listas) devuelve una lista L de los nodos padres asociados a n 
+;; <arbol-binario> := empty
+;; := (numero <arbol-binario> <arbol-binario>)
+(define ancestors (lambda (n BST) 
           (
            cond
-           [(equal? x (car arbol)) '()]
-           [(> x (car arbol)) ( cons (car arbol) (ancestors x (car(cdr(cdr arbol)))) )]
-           [else (cons (car arbol) (ancestors x (car(cdr arbol))))]
+           [(equal? n (car BST)) '()]
+           [(> n (car BST)) ( cons (car BST) (ancestors n (car(cdr(cdr BST)))) )]
+           [else (cons (car BST) (ancestors n (car(cdr BST))))]
             )
                     ))
 
@@ -583,8 +573,32 @@
 (caminos-suma '(-7 (-8 () ()) (3 (-5 (-6 () ()) (-4 () (-2 () ()))) ())) -15)
 
 ;; Ejercicio 17
+;; coin-change
+;; Proposito:
+;; monto x monedas -> n : Procedimiento que dado un monto (numero entero positivo) y monedas (lista de enteros positivos que representan las denominaciones disponibles) retorna 
+;; la cantidad de combinaciones posibles para obtener el valor de monto
+;; <monedas> := ()
+;;           := (<moneda> <monedas>)
+;;
+;; <moneda> ::= <int positivo>
+;;
+;; <monto> ::= <int no negativo>
 
+(define coin-change (lambda (monto monedas) 
+                (cond
+                  [(= monto 0) 1]
+                  [(null? monedas) 0]
+                  [( < (- monto (car monedas)) 0) (coin-change monto (cdr monedas))]
+                  [else 
+                    (+ (coin-change (- monto (car monedas)) monedas) (coin-change monto (cdr monedas)))]
+                      ))
+)
 
+;; Pruebas 
+(coin-change 5 '(1 2 5))
+(coin-change 6 '(2 3 7))
+(coin-change 7 '(2 4))
+(coin-change 10 '(2))
 
 ;;Ejercicio 18
 ;;to-infinix
