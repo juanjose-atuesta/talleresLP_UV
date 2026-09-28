@@ -4,6 +4,19 @@
 ;; William Rooselbelt May Barreto -> Ejercicios: 6, 11-13 , 15, 18
 ;; Miguel Angel Martinez Eraso -> Ejercicios: 1-5, y 16
 
+;; USO ETICO Y JUSTIFICACION DEL USO DE LA INTELIGENCIA ARTIFICIAL
+;;
+;;
+;; Durante la realización del taller se utilizó la Inteligencia Artificial como herramienta de apoyo y consulta, 
+;; principalmente para generar diferentes casos de prueba que permitieran verificar las funciones implementadas.
+;; También se utilizó para revisar la sintaxis de las funciones mientras las desarrollabamos, especialmente la organización de los paréntesis.
+;; Adicionalmente, se realizaron consultas sobre conceptos relacionados con los árboles binarios y su recorrido, para entender mejor la lógica necesaria para resolver los ejercicios. 
+;; Finalmente, se utilizó la IA como apoyo para identificar y consultar algunas funciones nativas de Racket.
+;; En todos los casos, la IA se utilizó como herramienta de consulta y verificación,  mientras que la implementación y comprensión de las soluciones fueron realizadas por los integrantes del taller.
+;;
+;;
+
+
 ;; FUNCIONES AUXILIARES PROPIAS
 (define (add1 x) (+ x 1))
 (define (sub1 x) (- x 1))
