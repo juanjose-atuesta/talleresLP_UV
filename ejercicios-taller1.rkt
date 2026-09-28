@@ -235,7 +235,7 @@
 (cartesian-filter '(1 2 3) '(4 5 6) (lambda (x y) (< x y)))
 (cartesian-filter '(1 2 3) '(1 2 3 4) (lambda (x y) (= (+ x y) 5)))
 (cartesian-filter '(1 4 7) '(2 3 5) (lambda (x y) (> x y)))
-(cartesian-filter '(2 3 4) '(6 8 9 12) (lambda (x y) (= (remainder y x) 0)))
+(cartesian-filter '(2 3 4) '(6 8 9 12) (lambda (x y) (= (modulo y x) 0)))
 
 ;; Ejercicio 8
 ;; group-by 
@@ -291,9 +291,10 @@
 
 ;; Pruebas
  (group-by (lambda (x) (if (number? x) 'numero 'otro)) '(a 2 b 4 c 7 9 0 d f y 4 b))
-(group-by (lambda (x) (if (= (remainder x 2) 0) 'par 'impar)) '(1 2 3 4 5 6 7 8 9))
 (group-by (lambda (x) (* x x)) '(1 2 1 3 4 5 5 9))
-
+(group-by (lambda (x) (if (< x 5) 'menor 'mayor)) '(1 3 5 7 2 8 4 10))
+(group-by (lambda (x) (* x x)) '(1 2 1 3 2 4))
+(group-by (lambda (x) (if (> x 10) 'grande 'pequeno)) '(3 15 7 20 2 12))
 
 
 ;; Ejercicio 9
@@ -349,8 +350,8 @@
 ;; Pruebas
 (count-pairs '(2 3 8 6 1) (lambda (a b) (> a b)))
 (count-pairs '(2 7 3 9 1) (lambda (a b) (< a b)))
-(count-pairs '(1 2 3 4 5) (lambda (a b) (= (remainder (+ a b) 2) 0)))
-(count-pairs '(2 3 4 6 8 9) (lambda (a b) (= (remainder b a) 0)))
+(count-pairs '(1 2 3 4 5) (lambda (a b) (= (+ a b) 6)))
+(count-pairs '(2 4 6 8) (lambda (a b) (< (+ a b) 10)))
 
 ;; Ejercicio 10
 ;; alternating?
@@ -373,9 +374,10 @@
   (func_aux L (cdr L))
                                     ))
 ;; Pruebas:
-(alternating? '(1 3 5 7 9) (lambda (a b) (= (remainder (+ a b) 2) 0)))
-(alternating? '(2 4 6 8 10 12) (lambda (a b) (< a b)))
-(alternating? '(12 6 3 1) (lambda (a b) (= (remainder a b) 0)))
+(alternating? '(1 2 3 4 5) (lambda (a b) (< a b)))
+(alternating? '(5 4 3 2 1) (lambda (a b) (> a b)))
+(alternating? '(1 2 3 4 5) (lambda (a b) (= (+ a 1) b)))
+(alternating? '(2 4 6 8 10) (lambda (a b) (< a b)))
 
 
 ;;Ejercicio 11
