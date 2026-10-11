@@ -14,7 +14,6 @@
 ;; Finalmente, se utilizó la IA como apoyo para identificar y consultar algunas funciones nativas de Racket.
 ;; En todos los casos, la IA se utilizó como herramienta de consulta y verificación,  mientras que la implementación y comprensión de las soluciones fueron realizadas por los integrantes del taller.
 ;;
-;;
 
 
 ;; FUNCIONES AUXILIARES PROPIAS
