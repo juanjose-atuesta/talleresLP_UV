@@ -1,12 +1,11 @@
+#lang eopl
 
-
-
-;; EXPRESION ::= CONST(numero)
-;; | VAR(variable)
-;; | ADD(EXPRESION, EXPRESION)
-;; | SUB(EXPRESION, EXPRESION)
-;; | MUL(EXPRESION, EXPRESION)
-
+;;Gramatica
+;;<expresion>::= <numero> 
+;;           ::= <identificador>
+;;           ::= (<expresion> + <expresion>)
+;;           ::= (<expresion> - <expresion>)
+;;           ::= (<expresion> * <expresion>)
 
 
 ;;Implementacion constante  -> miguel 
