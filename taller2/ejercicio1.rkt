@@ -251,31 +251,31 @@
 ;;(mul? '(add (const 3)(var y))) -> #f
 ;;(mul? '(sub (const 3) (var z))) -> #f
 
-;;mul-left
+;;mul->left
 ;;Proposito:
 ;;expresion -> expresion: Extractor que obtiene la expresion de la izquierda de una multiplicacion basada en listas
 
-(define mul-left
+(define mul->left
   (lambda (exp)
     (cadr exp)
     )
   )
 ;;Pruebas
-;;(mul-left '(mul (var x)(const 7))) -> '(var x)
-;;(mul-left '(mul (const 5)(var y))) -> '(const 5)
+;;(mul->left '(mul (var x)(const 7))) -> '(var x)
+;;(mul->left '(mul (const 5)(var y))) -> '(const 5)
 
-;;mul-right
+;;mul->right
 ;;Proposito
 ;;expresion -> expresion: Extractor que obtiene la expresion de la derecha de una multiplicacion basada en listas
 
-(define mul-right
+(define mul->right
   (lambda (exp)
     (caddr exp)
     )
   )
 ;;Pruebas
-;;(mul-right '(sub (var x)(const 7))) -> '(const 7)
-;;(mul-right '(sub (const 5)(var y))) -> '(var y)
+;;(mul->right '(sub (var x)(const 7))) -> '(const 7)
+;;(mul->right '(sub (const 5)(var y))) -> '(var y)
 
 
 ;;Pruebas 
