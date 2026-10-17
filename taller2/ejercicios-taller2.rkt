@@ -9,7 +9,6 @@
 
 ;;===============================================
 ;;
-;;Ejercicio 1: William May
 ;;TAD EXPRESION basado en listas
 
 ;;Gramatica
@@ -514,7 +513,6 @@
 
 ;;===============================================
 ;;
-;;Ejercicio 3: Miguel Martinez
 ;;Evaluacion de expresiones y ambientes con datatypes
 
 ;;Gramatica del ambiente
