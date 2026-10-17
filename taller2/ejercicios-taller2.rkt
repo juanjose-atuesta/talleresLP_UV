@@ -1,7 +1,7 @@
 #lang eopl
 ;; Juan Jose Atuesta Flor - 2438928
 ;; William Rooselbelt May Barreto - 2435731
-;; Miguel Angel Martinez Eraso -
+;; Miguel Angel Martinez Eraso - 2437814
 
 ;;===============================================
 ;;
@@ -689,3 +689,140 @@
 ;; Prueba 4: Expresión con ambiente anidado usando 'a' y 'x' sombreado
 ;; '((x * a) + z) -> ((100 * 7) + 2) = 702
 (EVALUAR (PARSE-DT '((x * a) + z)) env-anidado) ; -> Retorna 702
+
+;;===============================================
+;;
+;;Ejercicio 3: Miguel Martinez
+;;Evaluacion de expresiones y ambientes con datatypes
+
+;;Gramatica del ambiente
+;;<ambiente> ::= (empty-env-record)
+;;           ::= (extended-env-record (<simbolo>*) (<numero>*) <ambiente>)
+
+;;ambiente
+;;Proposito: Define el TAD ambiente. Un ambiente es vacio o es otro ambiente
+;;extendido con una lista de simbolos y una lista de valores asociados
+
+(define-datatype ambiente ambiente?
+  (empty-env-record)
+  (extended-env-record
+   (syms (list-of symbol?))
+   (vals (list-of number?))
+   (env ambiente?))
+  )
+
+;;empty-env
+;;Proposito:
+;;() -> ambiente: Constructor que retorna un ambiente vacio
+
+(define empty-env
+  (lambda ()
+    (empty-env-record)
+    )
+  )
+
+;;Pruebas
+;;(ambiente? (empty-env)) -> #t
+;;(APPLY-ENV (empty-env) 'x) -> error: no hay ligadura para x
+
+;;extend-env
+;;Proposito:
+;;Lista-de-simbolos x Lista-de-numeros x ambiente -> ambiente: Constructor que extiende
+;;un ambiente asociando cada simbolo de la primera lista con el valor de la misma posicion
+
+(define extend-env
+  (lambda (syms vals env)
+    (extended-env-record syms vals env)
+    )
+  )
+
+;;Pruebas
+;;(ambiente? (extend-env '(x y) '(1 2) (empty-env))) -> #t
+;;(APPLY-ENV (extend-env '(a) '(7) (empty-env)) 'a) -> 7
+
+;;buscar-en-rib
+;;Proposito:
+;;Simbolo x Lista-de-simbolos x Lista-de-numeros x ambiente -> numero: Funcion auxiliar que
+;;recorre a la vez la lista de simbolos y la de valores. Si encuentra el simbolo retorna el
+;;valor de la misma posicion; si no, busca en el ambiente anterior
+
+(define buscar-en-rib
+  (lambda (variable syms vals env)
+    (cond
+      [(null? syms) (APPLY-ENV env variable)]
+      [(eqv? (car syms) variable) (car vals)]
+      [else (buscar-en-rib variable (cdr syms) (cdr vals) env)]
+      )
+    )
+  )
+
+;;Pruebas
+;;(buscar-en-rib 'y '(x y z) '(5 10 2) (empty-env)) -> 10
+;;(buscar-en-rib 'w '(x) '(5) (extend-env '(w) '(8) (empty-env))) -> 8
+
+;;APPLY-ENV
+;;Proposito:
+;;ambiente x Simbolo -> numero: Retorna el valor asociado a una variable en el ambiente.
+;;Si la variable no esta ligada, reporta un error
+
+(define APPLY-ENV
+  (lambda (amb variable)
+    (cases ambiente amb
+      (empty-env-record ()
+                        (eopl:error 'APPLY-ENV "No hay ligadura para la variable: ~s" variable))
+      (extended-env-record (syms vals env)
+                           (buscar-en-rib variable syms vals env))
+      )
+    )
+  )
+
+;;Pruebas
+;;(APPLY-ENV (extend-env '(x y z) '(5 10 2) (empty-env)) 'x) -> 5
+;;(APPLY-ENV (extend-env '(x) '(100) (extend-env '(x y) '(5 10) (empty-env))) 'x) -> 100
+;;(APPLY-ENV (extend-env '(x) '(100) (extend-env '(x y) '(5 10) (empty-env))) 'y) -> 10
+
+;;EVALUAR
+;;Proposito:
+;;expresion x ambiente -> numero: Evalua una expresion en sintaxis abstracta (datatype)
+;;usando el ambiente para obtener el valor de las variables
+
+(define EVALUAR
+  (lambda (expr amb)
+    (cases expresion expr
+      (const-exp (num) num)
+      (var-exp (id) (APPLY-ENV amb id))
+      (add-exp (left right)
+               (+ (EVALUAR left amb) (EVALUAR right amb)))
+      (sub-exp (left right)
+               (- (EVALUAR left amb) (EVALUAR right amb)))
+      (mul-exp (left right)
+               (* (EVALUAR left amb) (EVALUAR right amb)))
+      )
+    )
+  )
+
+;;Pruebas
+
+(define ambiente-prueba
+  (extend-env '(x y z) '(5 10 2) (empty-env)))
+
+(define ambiente-anidado
+  (extend-env '(x a) '(100 7) ambiente-prueba))
+
+;; 1. Ejemplo del taller: ((3 * 5) * (10 - 2)) = 120
+(EVALUAR (PARSE-DT '((3 * x) * (y - 2))) ambiente-prueba)
+
+;; 2. Constante
+(EVALUAR (const-exp 42) ambiente-prueba)
+
+;; 3. Variable
+(EVALUAR (var-exp 'z) ambiente-prueba)
+
+;; 4. Suma y resta: (5 + (10 - 2)) = 13
+(EVALUAR (PARSE-DT '(x + (y - z))) ambiente-prueba)
+
+;; 5. Variable repetida en ambiente anidado, x vale 100 y a vale 7: ((100 * 7) + 2) = 702
+(EVALUAR (PARSE-DT '((x * a) + z)) ambiente-anidado)
+
+;; 6. Usando los datatypes directamente: (10 - (x * y)) = 10 - 50 = -40
+(EVALUAR (sub-exp (const-exp 10) (mul-exp (var-exp 'x) (var-exp 'y))) ambiente-prueba)
