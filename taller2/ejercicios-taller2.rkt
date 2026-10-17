@@ -3,6 +3,10 @@
 ;; William Rooselbelt May Barreto - 2435731
 ;; Miguel Angel Martinez Eraso - 2437814
 
+;;Declaración de uso de la IA
+;;En este taller se uso la IA para entender conceptos de parse y unparse, para entender en su totalidad que hace un constructor, extractor y predicados y para la generacion de
+;;algunos casos de prueba.
+
 ;;===============================================
 ;;
 ;;Ejercicio 1: William May
@@ -58,7 +62,7 @@
 ;;Pruebas
 ;;(const->value '(const 5)) -> 5
 ;;(const->value '(const -12)) -> -12
-;;(const ->value '(const 20)) -> 20
+;;(const->value '(const 20)) -> 20
 
 ;;Variable
 
@@ -276,8 +280,8 @@
     )
   )
 ;;Pruebas
-;;(mul->right '(sub (var x)(const 7))) -> '(const 7)
-;;(mul->right '(sub (const 5)(var y))) -> '(var y)
+;;(mul->right '(mul (var x)(const 7))) -> '(const 7)
+;;(mul->right '(mul (const 5)(var y))) -> '(var y)
 
 
 ;;Pruebas 
