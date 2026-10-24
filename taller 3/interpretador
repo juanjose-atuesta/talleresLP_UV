@@ -180,19 +180,12 @@ declarar-rec(
        Si (@b == 0) {
           0
        } sino {
-            (@a + evaluar @multiplicar(@a,(@b-1)) finEval)
+            (@a + evaluar @multiplicar(@a,(@b~1)) finEval)
         };
-)
-     
-
-
-
-
+) {
+    evaluar @multiplicar(4, 3) finEval
+}
 |#
-
-
-
-
 
 
 ;;ejercicio d
