@@ -1,11 +1,14 @@
 #lang eopl
-
-;; TALLER 3
+;;TALLER 3
+;;Integrantes:
 ;;William Rooselbelt May Barreto - 2435731
 ;;Miguel Angel Martinez Eraso -
-;;Juan Jose Atuesta Flor - 
+;;Juan Jose Atuesta Flor -
 
-;; 1. ESPECIFICACION LEXICA Y SINTACTICA (SLLGEN)
+;;Repositorio de github: https://github.com/juanjose-atuesta/talleresLP_UV.git
+
+;;INTERPRETADOR
+;;ESPECIFICACION LEXICA Y SINTACTICA (SLLGEN)
 (define scanner-spec
   '((white-sp (whitespace) skip)
     (comment ("%" (arbno (not #\newline))) skip)
@@ -47,7 +50,7 @@
 (sllgen:make-define-datatypes scanner-spec grammar)
 (define scan&parse (sllgen:make-string-parser scanner-spec grammar))
 
-;; 2. DATATYPES PARA PROCEDIMIENTOS Y AMBIENTES
+;;DATATYPES PARA PROCEDIMIENTOS Y AMBIENTES
 (define-datatype procVal procVal?
   (cerradura (lista-ID (list-of symbol?)) (exp expresion?) (amb ambiente?)))
 
@@ -58,7 +61,7 @@
 
 (define scheme-value? (lambda (v) #t))
 
-;; 3. AMBIENTE INICIAL Y BUSQUEDA DE VARIABLES
+;;AMBIENTE INICIAL Y BUSQUEDA DE VARIABLES
 (define ambiente-inicial
   (extended-env-record '(@a @b @c @d @e) '(1 2 3 "hola" "FLP") (empty-env-record)))
 
@@ -78,7 +81,7 @@
     (let loop ((syms syms) (pos 0))
       (cond ((null? syms) #f) ((eqv? sym (car syms)) pos) (else (loop (cdr syms) (+ pos 1)))))))
 
-;; 4. EVALUADOR PRINCIPAL
+;;EVALUADOR PRINCIPAL
 (define eval-program (lambda (pgm) (cases programa pgm (un-programa (exp) (eval-expression exp ambiente-inicial)))))
 (define valor-verdad? (lambda (val) (not (and (number? val) (zero? val)))))
 
@@ -127,7 +130,7 @@
       (primitiva-comparador-igual () (if (equal? v1 v2) 1 0)))))
 
 (define eval-prim-un
-  (lambda (v1 prim)
+  (lambda (prim v1)
     (cases primitiva-unaria prim
       (primitiva-longitud () (string-length (to-string v1)))
       (primitiva-add1 () (+ v1 1))
@@ -138,5 +141,64 @@
   (lambda (val)
     (cond ((string? val) val) ((symbol? val) (symbol->string val)) ((number? val) (number->string val)) (else ""))))
 
-;; 5. REPL
+;;REPL
 (define interpretador (sllgen:make-rep-loop "--> " (lambda (pgm) (eval-program pgm)) (sllgen:make-stream-parser scanner-spec grammar)))
+
+
+;;SOLUCION EJERCICIOS DEL TALLER 3
+;;ejercicio a
+
+
+
+
+
+
+
+
+
+
+;;ejercicio b
+
+
+
+
+
+
+
+
+
+;;ejercicio c @multiplicar
+;;Gramatica:
+;;<expresion>::= declarar-rec "(" {<identificador> "(" {<identificador>}*(",") ")" "=" <expresion> ";"}* ")" "{" <expresion> "}"
+;;Proposito:
+;;Calcular el producto de dos enteros no negativos mediante sumas sucesivas, sin utilizar la primitiva de multiplicacion.
+;;@multiplicar: Int x Int -> Int
+
+
+
+
+
+
+
+
+;;ejercicio d
+
+
+
+
+
+
+
+
+
+;;ejercicio e
+
+
+
+
+
+
+
+
+
+;;ejercicio f
