@@ -169,22 +169,26 @@
 
 ;;ejercicio c @multiplicar
 ;;Gramatica:
-;;<expresion>::= declarar-rec "(" {<identificador> "(" {<identificador>}*(",") ")" "=" <expresion> ";"}* ")" "{" <expresion> "}"
+;;<expresion>::= declarar-rec "(" {<identificador> "(" {<identificador}*(",") ")" "=" <expresion> ";"}* ")" "{" <expresion> "}"
 ;;Proposito:
 ;;Calcular el producto de dos enteros no negativos mediante sumas sucesivas, sin utilizar la primitiva de multiplicacion.
 ;;@multiplicar: Int x Int -> Int
+
 #|
-declarar-rec (
-   @multiplicar(@a,@b) =
-   Si (@b == 0) {
-       0
-}  sino {
-    (@a + evaluar @multiplicar(@a, (@b ~ 1)) finEval)
-};
+declarar-rec(
+     @multiplicar(@a,@b) =
+       Si (@b == 0) {
+          0
+       } sino {
+            (@a + evaluar @multiplicar(@a,(@b-1)) finEval)
+        };
+)
+     
+
+
 
 
 |#
-
 
 
 
