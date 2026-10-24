@@ -188,10 +188,13 @@ declarar-rec(
 |#
 
 
-;;ejercicio d
-
-
-
+;;ejercicio d @sumaParesRango
+;;Gramatica
+;;<expresion>::= declarar-rec "(" {<identificador> "(" {<identificador}*(",") ")" "=" <expresion> ";"}* ")" "{" <expresion> "}"
+;;Proposito
+;;Sumar todos los numeros pares dentro del intervalo (@a,@b) de forma recursiva
+;;@sumaParesRango: Int x Int -> Int
+ 
 
 
 
