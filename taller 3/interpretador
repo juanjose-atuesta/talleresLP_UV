@@ -194,7 +194,19 @@ declarar-rec(
 ;;Proposito
 ;;Sumar todos los numeros pares dentro del intervalo (@a,@b) de forma recursiva
 ;;@sumaParesRango: Int x Int -> Int
- 
+
+#|
+declarar-rec(
+  @esPar(@n) =
+     Si (@n == 0) {
+        1
+     }sino{
+        evaluar @esPar((@n~2)) finEval
+      }
+};
+
+
+|#
 
 
 
