@@ -146,7 +146,41 @@
 
 
 ;;SOLUCION EJERCICIOS DEL TALLER 3
-;;ejercicio a
+;;ejercicio a @sumarDigitos
+;;Gramatica:
+;;<expresion>::= declarar-rec "(" {<identificador> "(" {<identificador}*(",") ")" "=" <expresion> ";"}* ")" "{" <expresion> "}"
+;;Proposito:
+;;Sumar los digitos de un numero entero positivo. Como el lenguaje no tiene residuo ni division entera,
+;;se usan dos procedimientos auxiliares recursivos con restas sucesivas:
+;;@mod10: Int -> Int   (retorna el ultimo digito del numero)
+;;@div10: Int -> Int   (retorna el numero sin su ultimo digito)
+;;@sumarDigitos: Int -> Int
+
+#|
+declarar-rec(
+  @mod10(@n) =
+    Si (@n < 10) {
+       @n
+    } sino {
+       evaluar @mod10((@n ~ 10)) finEval
+    };
+  @div10(@n) =
+    Si (@n < 10) {
+       0
+    } sino {
+       (1 + evaluar @div10((@n ~ 10)) finEval)
+    };
+  @sumarDigitos(@n) =
+    Si (@n < 10) {
+       @n
+    } sino {
+       (evaluar @mod10(@n) finEval + evaluar @sumarDigitos(evaluar @div10(@n) finEval) finEval)
+    };
+) {
+    evaluar @sumarDigitos(147) finEval
+}
+|#
+;;Resultado esperado: 12
 
 
 
