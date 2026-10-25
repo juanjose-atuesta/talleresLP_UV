@@ -146,6 +146,7 @@
 
 
 ;;SOLUCION EJERCICIOS DEL TALLER 3
+
 ;;ejercicio a @sumarDigitos
 ;;Gramatica:
 ;;<expresion>::= declarar-rec "(" {<identificador> "(" {<identificador}*(",") ")" "=" <expresion> ";"}* ")" "{" <expresion> "}"
@@ -191,7 +192,42 @@ declarar-rec(
 
 
 
-;;ejercicio b
+;;ejercicio b @sumaNaturales
+;;Gramatica:
+;;<expresion>::= declarar-rec "(" {<identificador> "(" {<identificador}*(",") ")" "=" <expresion> ";"}* ")" "{" <expresion> "}"
+;;Proposito:
+;;Calcular la suma de los primeros (n) enteros positivos de forma recursiva.
+;;@sumaNaturales: Int -> Int
+
+;;Ejemplo 1 (n=5)
+#|
+declarar-rec(
+  @sumaNaturales(@n) =
+    Si (@n == 0) {
+       0
+    } sino {
+       (@n + evaluar @sumaNaturales((@n ~ 1)) finEval)
+    };
+) {
+    evaluar @sumaNaturales(5) finEval
+}
+|#
+;;Resultado esperado: 15
+
+;;Ejemplo 2 (n=10)
+#|
+declarar-rec(
+  @sumaNaturales(@n) =
+    Si (@n == 0) {
+       0
+    } sino {
+       (@n + evaluar @sumaNaturales((@n ~ 1)) finEval)
+    };
+) {
+    evaluar @sumaNaturales(10) finEval
+}
+|#
+;;Resultado esperado: 55
 
 
 
