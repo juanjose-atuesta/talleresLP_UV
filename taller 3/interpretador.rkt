@@ -298,7 +298,36 @@ declarar-rec(
 
 
 
-;;ejercicio e
+;;ejercicio e) @integrantes y @saludar
+;;Gramatica:
+;;<expresion>::= declarar "(" {<identificador> "=" <expresion> ";"}* ")" "{" <expresion> "}"
+;;              | procedimiento "(" {<identificador>}*(",") ")" "{" <expresion> "}"
+;;              | evaluar <expresion> "(" {<expresion>}*(",") ")" "finEval"
+;;Proposito:
+;;Crear un decorador al estilo de Python. @integrantes es un procedimiento sin parametros
+;;que retorna un string con los nombres de los integrantes del grupo. @saludar recibe un
+;;procedimiento como parametro y retorna otro procedimiento que al invocarse le antepone
+;;"Hola:" al resultado de invocar el procedimiento recibido. @decorate es el resultado de
+;;evaluar @saludar(@integrantes) finEval, por lo que al invocarlo sin parametros debe
+;;retornar "Hola:William_y_Miguel_y_JuanJose".
+
+#|
+declarar(
+  @integrantes = procedimiento() { "William_y_Miguel_y_JuanJose" };
+  @saludar     = procedimiento(@f) {
+                    procedimiento() {
+                      ("Hola:" concat evaluar @f() finEval)
+                    }
+                  };
+){
+  declarar(
+    @decorate = evaluar @saludar (@integrantes) finEval;
+  ){
+    evaluar @decorate () finEval
+  }
+}
+|#
+;;Resultado esperado: "Hola:William_y_Miguel_y_JuanJose"
 
 
 
@@ -306,6 +335,32 @@ declarar-rec(
 
 
 
+;;ejercicio f) 
+;;Gramatica:
+;;<expresion>::= declarar "(" {<identificador> "=" <expresion> ";"}* ")" "{" <expresion> "}"
+;;              | procedimiento "(" {<identificador>}*(",") ")" "{" <expresion> "}"
+;;              | evaluar <expresion> "(" {<expresion>}*(",") ")" "finEval"
+;;Proposito:
+;;Modificar el ejercicio anterior para que el decorador reciba como parametro otro mensaje
+;;que debe ponerse al final de todo el string. Ahora @saludar retorna un procedimiento que
+;;recibe @msg y al invocarlo construye: ("Hola:" concat evaluar @f() finEval) concat @msg
+;;Por consiguiente, @decorate espera un argumento y al evaluarlo con ("_ProfesoresFLP")
+;;debe retornar "Hola:William_y_Miguel_y_JuanJose_ProfesoresFLP".
 
-
-;;ejercicio f
+#|
+declarar(
+  @integrantes = procedimiento() { "William_y_Miguel_y_JuanJose" };
+  @saludar     = procedimiento(@f) {
+                    procedimiento(@msg) {
+                      (("Hola:" concat evaluar @f() finEval) concat @msg)
+                    }
+                  };
+){
+  declarar(
+    @decorate = evaluar @saludar (@integrantes) finEval;
+  ){
+    evaluar @decorate ("_ProfesoresFLP") finEval
+  }
+}
+|#
+;;Resultado esperado: "Hola:William_y_Miguel_y_JuanJose_ProfesoresFLP"
