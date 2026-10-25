@@ -5,6 +5,19 @@
 ;;Miguel Angel Martinez Eraso - 2437814
 ;;Juan Jose Atuesta Flor - 2438928
 
+
+;;DECLARACION DEL USO DE LA IA 
+;; Durante la elaboracion de este taller utilizamos herramientas de
+;; inteligencia artificial unicamente como apoyo de estudio, para:
+;;
+;;   - Entender conceptos vistos en el curso.
+;;   - Entender el codigo del interpretador implementado en clase.
+;;   - Repasar que son las gramaticas (lexicas y sintacticas).
+;;   - Entender como se genera el interpretador (scanner, parser,
+;;     evaluador y ambientes).
+;;   - Entender como se usan las funciones de SLLGEN
+;;     (sllgen:make-define-datatypes, sllgen:make-string-parser,
+;;     sllgen:make-rep-loop, etc.).
 ;;Repositorio de github: https://github.com/juanjose-atuesta/talleresLP_UV.git
 
 ;;INTERPRETADOR
