@@ -303,6 +303,11 @@ declarar-rec(
 ;;<expresion>::= declarar "(" {<identificador> "=" <expresion> ";"}* ")" "{" <expresion> "}"
 ;;              | procedimiento "(" {<identificador>}*(",") ")" "{" <expresion> "}"
 ;;              | evaluar <expresion> "(" {<expresion>}*(",") ")" "finEval"
+;;              | "(" <expresion> <primitiva-binaria> <expresion> ")"
+;;Nota:
+;;El declarar del interpretador evalua todas sus expresiones en el ambiente exterior
+;;(semantica paralela, como un let). Por eso @decorate se define en un declarar
+;;anidado: necesita que @saludar e @integrantes ya esten en el ambiente.
 ;;Proposito:
 ;;Crear un decorador al estilo de Python. @integrantes es un procedimiento sin parametros
 ;;que retorna un string con los nombres de los integrantes del grupo. @saludar recibe un
@@ -343,7 +348,7 @@ declarar(
 ;;Proposito:
 ;;Modificar el ejercicio anterior para que el decorador reciba como parametro otro mensaje
 ;;que debe ponerse al final de todo el string. Ahora @saludar retorna un procedimiento que
-;;recibe @msg y al invocarlo construye: ("Hola:" concat evaluar @f() finEval) concat @msg
+;;recibe @msg y al invocarlo construye: (("Hola:" concat evaluar @f() finEval) concat @msg)
 ;;Por consiguiente, @decorate espera un argumento y al evaluarlo con ("_ProfesoresFLP")
 ;;debe retornar "Hola:William_y_Miguel_y_JuanJose_ProfesoresFLP".
 
