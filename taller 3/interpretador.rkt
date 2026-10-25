@@ -2,7 +2,7 @@
 ;;TALLER 3
 ;;Integrantes:
 ;;William Rooselbelt May Barreto - 2435731
-;;Miguel Angel Martinez Eraso -
+;;Miguel Angel Martinez Eraso - 2437814
 ;;Juan Jose Atuesta Flor -
 
 ;;Repositorio de github: https://github.com/juanjose-atuesta/talleresLP_UV.git
