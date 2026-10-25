@@ -15,9 +15,6 @@
 ;;   - Repasar que son las gramaticas (lexicas y sintacticas).
 ;;   - Entender como se genera el interpretador (scanner, parser,
 ;;     evaluador y ambientes).
-;;   - Entender como se usan las funciones de SLLGEN
-;;     (sllgen:make-define-datatypes, sllgen:make-string-parser,
-;;     sllgen:make-rep-loop, etc.).
 ;;Repositorio de github: https://github.com/juanjose-atuesta/talleresLP_UV.git
 
 ;;INTERPRETADOR
